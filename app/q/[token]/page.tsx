@@ -450,6 +450,7 @@ export default function QuestionnairePage({
                 <FileUpload
                   questionnaireId={questionnaire.id}
                   questionId={question.id}
+                  token={token}
                   onAnswer={(val) => handleAnswer(question, val, undefined, val)}
                 />
               )}

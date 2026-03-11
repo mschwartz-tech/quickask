@@ -43,7 +43,24 @@ export async function POST(request: Request) {
     if (questions && responses) {
       for (const q of questions) {
         const response = responses.find((r: any) => r.question_id === q.id);
-        const answer = response?.answer_text || response?.selected_suggestions?.join(', ') || 'No answer';
+        let answer = 'No answer';
+        if (response) {
+          if (response.selected_suggestions?.length) {
+            answer = response.selected_suggestions.join(', ');
+          } else if (response.answer_text) {
+            // Check if it's a file upload JSON
+            try {
+              const parsed = JSON.parse(response.answer_text);
+              if (parsed.files) {
+                answer = parsed.files.map((f: any) => f.name).join(', ') + ' (file upload)';
+              } else {
+                answer = response.answer_text;
+              }
+            } catch {
+              answer = response.answer_text;
+            }
+          }
+        }
         results.push({ question: q.question_text, answer });
       }
     }
