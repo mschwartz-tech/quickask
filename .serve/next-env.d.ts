@@ -1,0 +1,1 @@
+/home/builder/projects/quickask/next-env.d.ts

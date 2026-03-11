@@ -1,0 +1,1 @@
+/home/builder/projects/quickask/next.config.mjs

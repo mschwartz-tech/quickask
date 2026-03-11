@@ -1,0 +1,1 @@
+/home/builder/projects/quickask/tailwind.config.ts
