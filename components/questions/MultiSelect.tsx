@@ -58,20 +58,20 @@ export default function MultiSelect({ suggested, onAnswer, savedValue }: Props) 
             key={opt}
             variants={itemVariants}
             onClick={() => toggle(opt)}
-            className={`w-full text-left rounded-xl border py-4 px-6 text-lg transition-all duration-200 min-h-[56px] flex items-center gap-3 ${
+            className={`w-full text-left rounded-xl border py-4 px-6 text-lg transition-all duration-200 min-h-[56px] flex items-center gap-3 backdrop-blur-xl ${
               isSelected
-                ? "border-blue-500 bg-blue-50 text-blue-700 font-medium"
-                : "border-gray-200 bg-white text-[#1A1A1A] hover:border-gray-300 hover:bg-gray-50 active:bg-gray-100"
+                ? "border-[#C5A572] bg-[#C5A572]/15 text-[#C5A572] font-medium"
+                : "border-white/10 bg-white/5 text-white/80 hover:border-[#C5A572]/40 hover:bg-white/10 active:bg-white/15"
             }`}
           >
             <span
               className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center transition-all ${
-                isSelected ? "bg-blue-500 border-blue-500" : "border-gray-300"
+                isSelected ? "bg-[#C5A572] border-[#C5A572]" : "border-white/30"
               }`}
             >
               {isSelected && (
                 <svg
-                  className="w-3 h-3 text-white"
+                  className="w-3 h-3 text-[#0A0A0A]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -92,7 +92,7 @@ export default function MultiSelect({ suggested, onAnswer, savedValue }: Props) 
             value={otherText}
             onChange={(e) => setOtherText(e.target.value)}
             placeholder="Type your answer..."
-            className="w-full rounded-xl border border-gray-200 p-4 text-lg resize-none focus:outline-none focus:border-blue-400 min-h-[80px] bg-white"
+            className="w-full rounded-xl border border-white/10 p-4 text-lg resize-none focus:outline-none focus:border-[#C5A572]/50 min-h-[80px] bg-white/5 text-white placeholder-white/30 backdrop-blur-xl"
           />
         </motion.div>
       )}
@@ -100,7 +100,7 @@ export default function MultiSelect({ suggested, onAnswer, savedValue }: Props) 
         variants={itemVariants}
         onClick={handleContinue}
         disabled={!hasSelection}
-        className="w-full py-4 rounded-xl bg-[#1A1A1A] text-white text-lg font-medium disabled:opacity-40 transition-opacity mt-1"
+        className="w-full py-4 rounded-xl bg-[#C5A572] text-[#0A0A0A] text-lg font-medium disabled:opacity-40 transition-all hover:bg-[#B87333] mt-1"
       >
         Continue
       </motion.button>

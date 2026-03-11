@@ -27,10 +27,10 @@ export default function YesNo({ onAnswer, savedValue }: Props) {
         <button
           key={opt}
           onClick={() => handle(opt)}
-          className={`w-full rounded-xl border py-5 text-xl font-medium transition-all duration-200 min-h-[64px] ${
+          className={`w-full rounded-xl border py-5 text-xl font-medium transition-all duration-200 min-h-[64px] backdrop-blur-xl ${
             selected === opt
-              ? "border-blue-500 bg-blue-50 text-blue-700"
-              : "border-gray-200 bg-white text-[#1A1A1A] hover:border-gray-300 hover:bg-gray-50 active:bg-gray-100"
+              ? "border-[#C5A572] bg-[#C5A572]/15 text-[#C5A572]"
+              : "border-white/10 bg-white/5 text-white/80 hover:border-[#C5A572]/40 hover:bg-white/10 active:bg-white/15"
           }`}
         >
           {opt}

@@ -70,32 +70,32 @@ export default function FileUpload({ questionnaireId, questionId, onAnswer }: Pr
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
-        className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed py-12 px-6 cursor-pointer transition-all ${
-          dragging ? "border-blue-400 bg-blue-50" : "border-gray-200 bg-white hover:border-gray-300"
+        className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed py-12 px-6 cursor-pointer transition-all backdrop-blur-xl ${
+          dragging ? "border-[#C5A572] bg-[#C5A572]/10" : "border-white/10 bg-white/5 hover:border-[#C5A572]/40"
         }`}
       >
         <input type="file" className="sr-only" onChange={onInputChange} />
         {file ? (
           <div className="text-center">
-            <p className="text-[#1A1A1A] font-medium">{file.name}</p>
-            {uploading && <p className="text-[#666] text-sm mt-1">Uploading...</p>}
-            {uploaded && <p className="text-emerald-600 text-sm mt-1">Uploaded</p>}
+            <p className="text-white font-medium">{file.name}</p>
+            {uploading && <p className="text-white/40 text-sm mt-1">Uploading...</p>}
+            {uploaded && <p className="text-[#C5A572] text-sm mt-1">Uploaded successfully</p>}
           </div>
         ) : (
           <div className="text-center">
-            <svg className="w-10 h-10 text-gray-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-10 h-10 text-white/20 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <p className="text-[#666]">Tap to choose a file</p>
-            <p className="text-[#999] text-sm mt-1">or drag and drop</p>
+            <p className="text-white/50">Tap to choose a file</p>
+            <p className="text-white/25 text-sm mt-1">or drag and drop</p>
           </div>
         )}
       </label>
-      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+      {error && <p className="text-red-400 text-sm text-center">{error}</p>}
       <button
         onClick={handleContinue}
         disabled={!file || uploading}
-        className="w-full py-4 rounded-xl bg-[#1A1A1A] text-white text-lg font-medium disabled:opacity-40 transition-opacity"
+        className="w-full py-4 rounded-xl bg-[#C5A572] text-[#0A0A0A] text-lg font-medium disabled:opacity-40 transition-all hover:bg-[#B87333]"
       >
         {uploading ? "Uploading..." : "Continue"}
       </button>

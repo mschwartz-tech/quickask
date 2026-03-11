@@ -19,7 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <div className="grain-overlay" aria-hidden="true" />
+      </body>
     </html>
   );
 }

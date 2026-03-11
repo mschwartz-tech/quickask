@@ -55,10 +55,10 @@ export default function SingleSelect({ suggested, onAnswer, savedValue }: Props)
           key={opt}
           variants={itemVariants}
           onClick={() => handleSelect(opt)}
-          className={`w-full text-left rounded-xl border py-4 px-6 text-lg transition-all duration-200 min-h-[56px] ${
+          className={`w-full text-left rounded-xl border py-4 px-6 text-lg transition-all duration-200 min-h-[56px] backdrop-blur-xl ${
             selected === opt
-              ? "border-blue-500 bg-blue-50 text-blue-700 font-medium"
-              : "border-gray-200 bg-white text-[#1A1A1A] hover:border-gray-300 hover:bg-gray-50 active:bg-gray-100"
+              ? "border-[#C5A572] bg-[#C5A572]/15 text-[#C5A572] font-medium"
+              : "border-white/10 bg-white/5 text-white/80 hover:border-[#C5A572]/40 hover:bg-white/10 active:bg-white/15"
           }`}
         >
           {opt}
@@ -75,12 +75,12 @@ export default function SingleSelect({ suggested, onAnswer, savedValue }: Props)
             value={otherText}
             onChange={(e) => setOtherText(e.target.value)}
             placeholder="Type your answer..."
-            className="w-full rounded-xl border border-gray-200 p-4 text-lg resize-none focus:outline-none focus:border-blue-400 min-h-[96px] bg-white"
+            className="w-full rounded-xl border border-white/10 p-4 text-lg resize-none focus:outline-none focus:border-[#C5A572]/50 min-h-[96px] bg-white/5 text-white placeholder-white/30 backdrop-blur-xl"
           />
           <button
             onClick={handleOtherSubmit}
             disabled={!otherText.trim()}
-            className="w-full py-4 rounded-xl bg-[#1A1A1A] text-white text-lg font-medium disabled:opacity-40 transition-opacity"
+            className="w-full py-4 rounded-xl bg-[#C5A572] text-[#0A0A0A] text-lg font-medium disabled:opacity-40 transition-all hover:bg-[#B87333]"
           >
             Continue
           </button>

@@ -44,7 +44,6 @@ export default function QuestionnairePage({
   const [direction, setDirection] = useState(1);
   const [saving, setSaving] = useState(false);
 
-  // Load answers from localStorage backup
   const STORAGE_KEY = `quickask-${token}`;
 
   useEffect(() => {
@@ -101,12 +100,11 @@ export default function QuestionnairePage({
     load();
   }, [token]);
 
-  // Evaluate conditional logic
   function shouldSkip(question: Question): boolean {
     if (!question.conditional_logic) return false;
     const { if_question_id, operator, value } = question.conditional_logic;
     const ans = answers[if_question_id];
-    if (!ans) return true; // condition question not answered, skip
+    if (!ans) return true;
 
     const answerText = ans.text || ans.selections?.join(",") || "";
 
@@ -122,7 +120,6 @@ export default function QuestionnairePage({
     }
   }
 
-  // Get the next visible question index from a given index
   function getNextIdx(from: number): number | null {
     for (let i = from + 1; i < questions.length; i++) {
       if (!shouldSkip(questions[i])) return i;
@@ -137,7 +134,6 @@ export default function QuestionnairePage({
     return from;
   }
 
-  // Count visible questions for progress
   const visibleQuestions = questions.filter((q) => !shouldSkip(q));
   const visibleCurrentIndex = visibleQuestions.findIndex(
     (q) => q.id === questions[currentIdx]?.id
@@ -157,7 +153,6 @@ export default function QuestionnairePage({
       if (!questionnaire) return;
       setSaving(true);
 
-      // Update local state + localStorage backup
       const newAnswers = {
         ...answers,
         [question.id]: { text: answerText, selections, fileUrl },
@@ -166,7 +161,6 @@ export default function QuestionnairePage({
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newAnswers));
 
       try {
-        // Mark in_progress on first answer
         if (questionnaire.status === "pending" || questionnaire.status === "draft") {
           await supabase
             .from("quickask_questionnaires")
@@ -175,7 +169,6 @@ export default function QuestionnairePage({
           setQuestionnaire((q) => q ? { ...q, status: "in_progress" } : q);
         }
 
-        // Upsert response
         await supabase.from("quickask_responses").upsert(
           {
             questionnaire_id: questionnaire.id,
@@ -208,7 +201,6 @@ export default function QuestionnairePage({
 
     const nextIdx = getNextIdx(currentIdx);
     if (nextIdx === null) {
-      // All done
       await markCompleted();
       setPageState("done");
     } else {
@@ -232,12 +224,12 @@ export default function QuestionnairePage({
     setPageState("question");
   }
 
-  // ── Render states ──────────────────────────────────────────────────────────
+  // ── Render states ──
 
   if (pageState === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA]">
-        <div className="w-8 h-8 rounded-full border-2 border-gray-200 border-t-gray-400 animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[#0A0A0A]">
+        <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-[#C5A572] animate-spin" />
       </div>
     );
   }
@@ -246,15 +238,19 @@ export default function QuestionnairePage({
     return (
       <Screen>
         <div className="text-center px-6">
-          <p className="text-5xl mb-6">🔍</p>
-          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full border border-white/10 bg-white/5 flex items-center justify-center">
+            <svg className="w-7 h-7 text-[#C5A572]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+          </div>
+          <h1 className="font-heading text-2xl font-semibold text-white mb-2">
             {networkError ? "Connection error" : "Not found"}
           </h1>
-          <p className="text-[#666] text-base leading-relaxed">{errorMsg}</p>
+          <p className="text-white/50 text-base leading-relaxed">{errorMsg}</p>
           {networkError && (
             <button
               onClick={() => window.location.reload()}
-              className="mt-6 px-6 py-3 rounded-xl bg-[#1A1A1A] text-white font-medium"
+              className="mt-6 px-8 py-3 rounded-xl bg-[#C5A572] text-[#0A0A0A] font-medium hover:bg-[#B87333] transition-colors"
             >
               Try again
             </button>
@@ -268,9 +264,13 @@ export default function QuestionnairePage({
     return (
       <Screen>
         <div className="text-center px-6">
-          <p className="text-5xl mb-6">⏰</p>
-          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Link expired</h1>
-          <p className="text-[#666] text-base leading-relaxed">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full border border-white/10 bg-white/5 flex items-center justify-center">
+            <svg className="w-7 h-7 text-[#C5A572]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 className="font-heading text-2xl font-semibold text-white mb-2">Link expired</h1>
+          <p className="text-white/50 text-base leading-relaxed">
             This questionnaire has expired. Please contact us for a new link.
           </p>
         </div>
@@ -282,10 +282,14 @@ export default function QuestionnairePage({
     return (
       <Screen>
         <div className="text-center px-6">
-          <p className="text-5xl mb-6">✅</p>
-          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Already submitted</h1>
-          <p className="text-[#666] text-base leading-relaxed">
-            You have already completed this questionnaire. Thank you!
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full border border-[#C5A572]/30 bg-[#C5A572]/10 flex items-center justify-center">
+            <svg className="w-7 h-7 text-[#C5A572]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h1 className="font-heading text-2xl font-semibold text-white mb-2">Already submitted</h1>
+          <p className="text-white/50 text-base leading-relaxed">
+            You have already completed this questionnaire. Thank you.
           </p>
         </div>
       </Screen>
@@ -298,21 +302,23 @@ export default function QuestionnairePage({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="min-h-screen flex items-center justify-center bg-[#FAFAFA]"
+        className="min-h-screen flex items-center justify-center bg-[#0A0A0A]"
       >
         <div className="text-center px-6">
-          <motion.p
+          <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="text-6xl mb-6"
+            className="w-20 h-20 mx-auto mb-6 rounded-full border border-[#C5A572]/30 bg-[#C5A572]/10 flex items-center justify-center"
           >
-            🙌
-          </motion.p>
-          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-3">
-            Thank you{questionnaire?.client_name ? `, ${questionnaire.client_name.split(" ")[0]}` : ""}!
+            <svg className="w-9 h-9 text-[#C5A572]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </motion.div>
+          <h1 className="font-heading text-3xl font-semibold text-white mb-3">
+            Thank you{questionnaire?.client_name ? `, ${questionnaire.client_name.split(" ")[0]}` : ""}.
           </h1>
-          <p className="text-[#666] text-base leading-relaxed">
+          <p className="text-white/50 text-base leading-relaxed">
             Your responses have been submitted. We appreciate your time.
           </p>
         </div>
@@ -326,32 +332,32 @@ export default function QuestionnairePage({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="min-h-screen flex flex-col items-center justify-center bg-[#FAFAFA] px-6"
+        className="min-h-screen flex flex-col items-center justify-center bg-[#0A0A0A] px-6"
       >
         <div className="w-full max-w-md text-center">
           {questionnaire.client_name && (
-            <p className="text-[#666] text-base mb-2">
-              Hi, {questionnaire.client_name.split(" ")[0]} 👋
+            <p className="text-white/40 text-base mb-2 tracking-wide uppercase text-sm">
+              Welcome, {questionnaire.client_name.split(" ")[0]}
             </p>
           )}
-          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-4 leading-snug">
+          <h1 className="font-heading text-3xl font-semibold text-white mb-4 leading-snug">
             {questionnaire.intro_message || "We have a few quick questions for you."}
           </h1>
-          <p className="text-[#666] text-sm mb-10">
-            {questions.length} question{questions.length !== 1 ? "s" : ""} · Takes about a minute
+          <p className="text-white/40 text-sm mb-10">
+            {questions.length} question{questions.length !== 1 ? "s" : ""} &middot; Takes about a minute
           </p>
           <button
             onClick={startQuestionnaire}
-            className="w-full py-4 rounded-xl bg-[#1A1A1A] text-white text-lg font-medium hover:bg-[#2a2a2a] active:bg-[#333] transition-colors"
+            className="w-full py-4 rounded-xl bg-[#C5A572] text-[#0A0A0A] text-lg font-medium hover:bg-[#B87333] active:bg-[#A0622A] transition-colors"
           >
-            Let&apos;s Begin
+            Begin
           </button>
         </div>
       </motion.div>
     );
   }
 
-  // ── Question screen ────────────────────────────────────────────────────────
+  // ── Question screen ──
 
   const question = questions[currentIdx];
   if (!question || !questionnaire) return null;
@@ -359,11 +365,11 @@ export default function QuestionnairePage({
   const savedAns = answers[question.id];
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] flex flex-col">
+    <div className="min-h-screen bg-[#0A0A0A] flex flex-col">
       {/* Progress bar */}
-      <div className="h-1 bg-gray-100 w-full">
+      <div className="h-1 bg-white/5 w-full">
         <motion.div
-          className="h-full bg-blue-500 rounded-full"
+          className="h-full bg-[#C5A572] rounded-full"
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         />
@@ -371,7 +377,7 @@ export default function QuestionnairePage({
 
       {/* Network error banner */}
       {networkError && (
-        <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 text-amber-700 text-sm text-center">
+        <div className="bg-[#C5A572]/10 border-b border-[#C5A572]/20 px-4 py-2 text-[#C5A572] text-sm text-center">
           Answers saved locally. Retrying...
         </div>
       )}
@@ -389,12 +395,12 @@ export default function QuestionnairePage({
             className="flex-1 flex flex-col px-6 pt-10 pb-8 max-w-md mx-auto w-full"
           >
             {/* Progress indicator */}
-            <p className="text-[#999] text-sm mb-6">
+            <p className="text-white/30 text-sm mb-6 tracking-wider">
               {visibleCurrentIndex + 1} of {visibleQuestions.length}
             </p>
 
             {/* Question text */}
-            <h2 className="text-2xl font-medium text-[#1A1A1A] leading-snug mb-8">
+            <h2 className="font-heading text-2xl font-medium text-white leading-snug mb-8">
               {question.question_text}
             </h2>
 
@@ -449,7 +455,7 @@ export default function QuestionnairePage({
 
             {/* Saving indicator */}
             {saving && (
-              <p className="text-center text-[#999] text-xs mt-4">Saving...</p>
+              <p className="text-center text-white/30 text-xs mt-4">Saving...</p>
             )}
           </motion.div>
         </AnimatePresence>
@@ -460,7 +466,7 @@ export default function QuestionnairePage({
 
 function Screen({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA]">
+    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0A]">
       {children}
     </div>
   );

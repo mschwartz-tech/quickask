@@ -23,12 +23,12 @@ export default function FreeText({ onAnswer, savedValue }: Props) {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Type your answer here..."
-        className="w-full rounded-xl border border-gray-200 p-4 text-lg resize-none focus:outline-none focus:border-blue-400 min-h-[160px] bg-white text-[#1A1A1A]"
+        className="w-full rounded-xl border border-white/10 p-4 text-lg resize-none focus:outline-none focus:border-[#C5A572]/50 min-h-[160px] bg-white/5 text-white placeholder-white/30 backdrop-blur-xl"
       />
       <button
         onClick={() => { if (text.trim()) onAnswer(text.trim()); }}
         disabled={!text.trim()}
-        className="w-full py-4 rounded-xl bg-[#1A1A1A] text-white text-lg font-medium disabled:opacity-40 transition-opacity"
+        className="w-full py-4 rounded-xl bg-[#C5A572] text-[#0A0A0A] text-lg font-medium disabled:opacity-40 transition-all hover:bg-[#B87333]"
       >
         Continue
       </button>

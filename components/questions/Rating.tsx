@@ -37,7 +37,7 @@ export default function Rating({ onAnswer, savedValue }: Props) {
           >
             <svg
               className={`w-12 h-12 transition-colors duration-150 ${
-                n <= display ? "text-amber-400" : "text-gray-200"
+                n <= display ? "text-[#C5A572]" : "text-white/15"
               }`}
               fill="currentColor"
               viewBox="0 0 24 24"
@@ -48,7 +48,7 @@ export default function Rating({ onAnswer, savedValue }: Props) {
         ))}
       </div>
       {display > 0 && (
-        <p className="text-[#666] text-sm">
+        <p className="text-white/40 text-sm">
           {display === 1 && "Poor"}
           {display === 2 && "Fair"}
           {display === 3 && "Good"}
