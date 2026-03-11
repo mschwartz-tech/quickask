@@ -2,15 +2,15 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { supabase } from "@/lib/supabase";
-import type { Questionnaire, Question, AnswerMap } from "@/lib/types";
-import SingleSelect from "@/components/questions/SingleSelect";
-import MultiSelect from "@/components/questions/MultiSelect";
-import FreeText from "@/components/questions/FreeText";
-import YesNo from "@/components/questions/YesNo";
-import Rating from "@/components/questions/Rating";
-import DatePicker from "@/components/questions/DatePicker";
-import FileUpload from "@/components/questions/FileUpload";
+import { supabase } from "../../../lib/supabase";
+import type { Questionnaire, Question, AnswerMap } from "../../../lib/types";
+import SingleSelect from "../../../components/questions/SingleSelect";
+import MultiSelect from "../../../components/questions/MultiSelect";
+import FreeText from "../../../components/questions/FreeText";
+import YesNo from "../../../components/questions/YesNo";
+import Rating from "../../../components/questions/Rating";
+import DatePicker from "../../../components/questions/DatePicker";
+import FileUpload from "../../../components/questions/FileUpload";
 
 type PageState =
   | "loading"
