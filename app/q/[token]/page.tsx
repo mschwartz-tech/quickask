@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "../../../lib/supabase";
 import type { Questionnaire, Question, AnswerMap } from "../../../lib/types";
@@ -30,9 +30,9 @@ const slideVariants = {
 export default function QuestionnairePage({
   params,
 }: {
-  params: { token: string };
+  params: Promise<{ token: string }>;
 }) {
-  const { token } = params;
+  const { token } = React.use(params);
 
   const [pageState, setPageState] = useState<PageState>("loading");
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(null);
