@@ -202,6 +202,8 @@ export default function QuestionnairePage({
     const nextIdx = getNextIdx(currentIdx);
     if (nextIdx === null) {
       await markCompleted();
+      // Notify completion
+      try { fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) }); } catch {}
       setPageState("done");
     } else {
       setDirection(1);
