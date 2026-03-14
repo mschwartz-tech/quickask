@@ -211,6 +211,18 @@ export default function QuestionnairePage({
     }
   }
 
+  async function handleSkip() {
+    const nextIdx = getNextIdx(currentIdx);
+    if (nextIdx === null) {
+      await markCompleted();
+      try { fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }) }); } catch {}
+      setPageState("done");
+    } else {
+      setDirection(1);
+      setCurrentIdx(nextIdx);
+    }
+  }
+
   async function markCompleted() {
     if (!questionnaire) return;
     await supabase
@@ -460,6 +472,17 @@ export default function QuestionnairePage({
             {saving && (
               <p className="text-center text-white/30 text-xs mt-4">Saving...</p>
             )}
+
+            {/* Skip button */}
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={handleSkip}
+                disabled={saving}
+                className="text-white/30 text-sm hover:text-white/60 transition-colors disabled:opacity-30 underline-offset-2 hover:underline"
+              >
+                Skip this question
+              </button>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
