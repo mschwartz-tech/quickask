@@ -397,7 +397,7 @@ export default function QuestionnairePage({
       )}
 
       {/* Question area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-y-auto">
         <AnimatePresence mode="wait" initial={false} custom={direction}>
           <motion.div
             key={question.id}
@@ -419,7 +419,7 @@ export default function QuestionnairePage({
             </h2>
 
             {/* Question input */}
-            <div className="flex-1">
+            <div>
               {question.question_type === "single_select" && (
                 <SingleSelect
                   suggested={question.suggested_answers || []}
